@@ -3554,3 +3554,4 @@ table.dataTable {
   .shop-name{font-size: 25px;font-family: 'NotoSansLao-Bold';}
   .bill-footer{display: none;}
   button:hover{cursor: pointer;}
+  .login-bg{ background:url('./../../../../uploads/login-bg.jpg') no-repeat; background-size:cover; height:100vh; position:relative;}
