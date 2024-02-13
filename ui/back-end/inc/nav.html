@@ -1,0 +1,53 @@
+<!-- START SIDEBAR-->
+<nav class="page-sidebar la-nomal" id="sidebar">
+    <div id="sidebar-collapse">
+        <div class="admin-block d-flex">
+            <div>
+                <a href="{{ @BASE }}/admin">
+                    <img src="{{ @BASE }}/uploads/logo/logo.png" width="45px" />
+                </a>
+            </div>
+            <div class="admin-info">
+                <div class="font-strong">{{ @LOGON_USER_NAME }}</div><small>{{ ucfirst(@LOGON_USER_ROLE) }}</small></div>
+        </div>
+        <ul class="side-menu metismenu">
+            <li>
+                <a class="{{ @nav=='dashboard' ? 'active' : '' }}" href="{{ @BASE }}/admin"><i class="sidebar-item-icon fa fa-th-large"></i>
+                    <span class="nav-label">ໜ້າຫຼັກ</span>
+                </a>
+            </li>
+
+            <check if="{{ @LOGON_USER_ROLE == 'admin' }}">
+                <true>
+                  
+                    <li class="{{ @nav=='member' ? 'active' : '' }}">
+                        <a class="{{ @nav=='member' ? 'active' : '' }}" href="javascript:;"><i class="sidebar-item-icon fa fa-file-code-o"></i>
+                            <span class="nav-label">ສະມາຊິກ</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a class="{{ @subnav=='member' ? 'active' : '' }}" href="{{ @BASE }}/admin/member/edit">ເພີ່ມສະມາຊິກ</a>
+                            </li>
+                            <li>
+                                <a class="{{ @subnav=='member-list' ? 'active' : '' }}" href="{{ @BASE }}/admin/member">ລາຍລະອຽດ</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li class="{{ @nav=='user' ? 'active' : '' }}">
+                        <a class="{{ @nav=='user' ? 'active' : '' }}" href="javascript:;"><i class="sidebar-item-icon fa fa-users"></i>
+                            <span class="nav-label">ຜູ້ໃຊ້</span><i class="fa fa-angle-left arrow"></i></a>
+                        <ul class="nav-2-level collapse">
+                            <li>
+                                <a class="{{ @subnav=='user' ? 'active' : '' }}" href="{{ @BASE }}/admin/user/edit">ເພີ່ມໃໝ່</a>
+                            </li>
+                            <li>
+                                <a class="{{ @subnav=='user-list' ? 'active' : '' }}" href="{{ @BASE }}/admin/user">ລາຍການ</a>
+                            </li>
+                        </ul>
+                    </li>
+                </true>
+            </check>
+        </ul>
+    </div>
+</nav>
+<!-- END SIDEBAR-->

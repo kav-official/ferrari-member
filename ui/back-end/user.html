@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>{{ @strPage }}</title>
+    <include href="back-end/inc/header.html"/>
+</head>
+
+<body class="fixed-navbar has-animation fixed-layout">
+    <div class="page-wrapper">
+        <include href="back-end/inc/topnav.html"/>
+        <include href="back-end/inc/nav.html"/>
+        <div class="content-wrapper">
+            <div class="page-content fade-in-up">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ibox">
+                            <div class="ibox-head">
+                                <div class="ibox-title la-bold">{{ @strAction }}</div>
+                            </div>
+                            <div class="ibox-body la-nomal">
+                                <form id="submit-form" method="{{ @method }}" action="{{ @BASE }}/admin/user">
+                                    <input type="hidden" name="id" value="{{ @id }}">
+                                    <div class="row">
+                                        <div class="col-sm-6 form-group">
+                                            <label>ຊື່</label>
+                                            <input type="text" name="name" class="form-control" value="{{ @item->name ?? '' }}">
+                                            <div class="error"></div>
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            <label>ອີເມວ/ເບີໂທ</label>
+                                            <input type="text" name="email" class="form-control" value="{{ @item->email ?? '' }}">
+                                            <div class="error"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 form-group">
+                                            <label>ລະຫັດຜ່ານ</label>
+                                            <input type="text" name="password" class="form-control">
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            <label>ຢືນຢັນລະຫັດຜ່ານ</label>
+                                            <input type="text" name="confirm_password" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>ສະຖານະ</label>
+                                        <set role="{{ @item->role ?? '' }}"></set>
+                                        <div>
+                                            <label class="ui-radio ui-radio-inline">
+                                                <input type="radio" name="role" value="admin" {{ @role=='admin' || @role=='' ? 'checked' : '' }}>
+                                                <span class="input-span"></span>ແອັດມິນ
+                                            </label>
+                                            <label class="ui-radio ui-radio-inline">
+                                                <input type="radio" name="role" value="staff" {{ @role=='staff' ? 'checked' : '' }}>
+                                                <span class="input-span"></span>ພະນັກງານ
+                                            </label>
+                                            <label class="ui-radio ui-radio-inline">
+                                                <input type="radio" name="role" value="gastation" {{ @role=='gastation' ? 'checked' : '' }}>
+                                                <span class="input-span"></span>ປ້ຳນ້ຳມັນ
+                                            </label>
+                                            <label class="ui-radio ui-radio-inline">
+                                                <input type="radio" name="role" value="vungvieng" {{ @role=='vungvieng' ? 'checked' : '' }}>
+                                                <span class="input-span"></span>ວັງວຽງ
+                                            </label>
+                                            <label class="ui-radio ui-radio-inline">
+                                                <input type="radio" name="role" value="soccer" {{ @role=='soccer' ? 'checked' : '' }}>
+                                                <span class="input-span"></span>ເຕະບານ
+                                            </label>
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary btn-submit" type="submit">ຕົກລົງ <i class="fa"></i></button>
+                                        <a href="{{ @BASE }}/admin/user" class="btn btn-default">ຍົກເລີກ</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <include href="back-end/inc/footer.html"/>
+        </div>
+    </div>
+    <include href="back-end/inc/script.html"/>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#submit-form').submit(function(e){
+                var form = $(e.target);
+               if($("input[name=name]").val() !='' || $("input[name=email]").val() !=''){
+                    if(form.is("#submit-form")){
+                        e.preventDefault();
+                        $.ajax({
+                            type: form.attr("method"),            
+                            url: form.attr("action"), 
+                            data: form.serialize(),          
+                            success: function(data){
+                                if (data.success)
+                                {
+                                    window.location.href = '{{ @BASE }}/admin/user?success='+data.message;
+                                } else {
+                                    Swal.fire("ຜິດພາດ!", data.message, "error");
+                                    $('button.btn-submit i.fa').removeClass( "fa-refresh fa-spin" );
+                                    $('button.btn-submit').removeAttr('style');
+                                    $("button.btn-submit").prop('disabled', false);
+                                    $('form#submit-form').trigger("reset"); 
+                                }
+                            },
+                            error: function(){
+                                Swal.fire("ຜິດພາດ!", "ກະລຸນາລອງໃໝ່ອີກຄັ້ງ", "error");
+                                $('button.btn-submit i.fa').removeClass( "fa-refresh fa-spin" );
+                                $('button.btn-submit').removeAttr('style');
+                                $("button.btn-submit").prop('disabled', false);
+                            },
+                        })
+                    }
+                  }else{
+                    Swal.fire('Warning','Invalide Email or password','warning')
+               }
+            });
+
+            $("#submit-form").validate({
+            rules: {
+                name: {
+                        required: true
+                    },
+                email: {
+                        required: true
+                    }
+                },
+                messages: {
+                    name: {
+                        required: "Please enter user name.",
+                    },
+                    email: {
+                        required: "Please enter user email.",
+                    }
+                },
+                errorPlacement: function(error, element) {
+                error.appendTo(element.closest('div.form-group').find('div.error'));
+            },
+          });
+          
+        });
+    </script>
+</body>
+</html>

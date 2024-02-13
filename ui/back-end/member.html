@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>{{ @strPage }}</title>
+    <include href="back-end/inc/header.html"/>
+</head>
+
+<body class="fixed-navbar has-animation fixed-layout">
+    <div class="page-wrapper">
+        <!-- START HEADER-->
+        <include href="back-end/inc/topnav.html"/>
+        <!-- END HEADER-->
+        <!-- START SIDEBAR-->
+        <include href="back-end/inc/nav.html"/>
+        <!-- END SIDEBAR-->
+        <div class="content-wrapper">
+            <div class="page-content fade-in-up">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ibox">
+                            <div class="ibox-head">
+                                <div class="ibox-title la-bold">{{ @strAction }}</div>
+                            </div>
+                            <div class="ibox-body la-nomal">
+                                <form class="la-nomal" id="submit-form" method="POST" action="{{ @BASE }}/admin/member">
+                                    <input type="hidden" name="id" value="{{ @id }}">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="mb-3">
+                                                <h4 class="la-bold">{{ @strAction }}</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">ຊື່ສະມາຊິກ</label>
+                                                <input required="true" type="text" name="first_name" class="form-control" value="{{ @item->first_name ?? '' }}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">ນາມສະກຸນ</label>
+                                                <input required="true" type="text" name="last_name" class="form-control" value="{{ @item->last_name ?? '' }}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">ເບີໂທ</label>
+                                                <input required="true"  type="text" name="contact" class="form-control" value="{{ @item->contact ?? '' }}" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">ຈຳນວນເງີນ</label>
+                                                <input required="true"  type="text" name="amount" class="form-control add-commas" value="{{ @item->amount ?? '' }}" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="mb-6">
+                                                <label class="form-label">ທີຢູ່</label>
+                                                <textarea name="address" class="form-control">{{ @item->address ?? '' }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <button type="submit" class="btn btn-primary la-nomal btn-submit">ຕົກລົງ <i class="fas"></i></button>
+                                    <a href="{{ @BASE }}/admin/member" class="btn btn-secondary la-nomal">ຍົກເລີກ</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+            <include href="back-end/inc/footer.html"/>
+        </div>
+    </div>
+    <!-- BEGIN THEME CONFIG PANEL-->
+    <!-- CORE PLUGINS-->
+    <include href="back-end/inc/script.html"/>
+    <script>
+        $(document).ready(function(){
+            $('#submit-form').submit(function(e){
+                var form = $(e.target);
+                if(form.is("#submit-form")){
+                    e.preventDefault();
+                    var formData = new FormData(this);
+                    $.ajax({
+                        type: form.attr("method"),            
+                        url: form.attr("action"), 
+                        data: formData,
+                        cache:false,
+                        contentType: false,
+                        processData: false,
+                        beforeSend: function(){
+                            $("button.btn-submit").prop('disabled', true);
+                            $('button.btn-submit').css('cursor','not-allowed');
+                            $('button.btn-submit i').addClass( "fa-spinner fa-pulse" );
+                        },  
+                        success: function(data){
+                            if (data.success){
+                                window.location.href = '{{ @BASE }}/admin/member?success='+data.message;
+                            } else {
+                                Swal.fire("ຜິດພາດ!", data.message, "error");
+                                $('button.btn-submit i').removeClass( "fa-spinner fa-pulse" );
+                                $('button.btn-submit').removeAttr('style');
+                                $("button.btn-submit").prop('disabled', false);
+                                $('form#submit-form').trigger("reset"); 
+                            }
+                        },
+                        error: function(){
+                            Swal.fire("ຜິດພາດ!", "ກະລຸນາລອງໃໝ່ອີກຄັ້ງ", "error");
+                            $('button.btn-submit i').removeClass( "fa-spinner fa-pulse" );
+                            $('button.btn-submit').removeAttr('style');
+                            $("button.btn-submit").prop('disabled', false);
+                        },
+                    });
+                }
+            });
+        })
+    </script>
+</body>
+</html>

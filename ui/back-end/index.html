@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>{{ @strPage }}</title>
+    <include href="back-end/inc/header.html"/>
+</head>
+<body class="fixed-navbar has-animation fixed-layout">
+    <div class="page-wrapper">
+        <!-- START HEADER-->
+        <include href="back-end/inc/topnav.html"/>
+        <!-- END HEADER-->
+        <!-- START SIDEBAR-->
+        <include href="back-end/inc/nav.html"/>
+        <!-- END SIDEBAR-->
+        <div class="content-wrapper">
+            <!-- START PAGE CONTENT-->
+            <div class="page-content fade-in-up">
+                <div class="row" id="app">
+                    <div class="col-lg-12">
+                        <div class="ibox">
+                            <div class="ibox-head">
+                                <div class="ibox-title la-bold">
+                                    <h2 class="text-center">ຍິນດີຕ້ອນຮັບ <strong>{{ @LOGON_USER_NAME }}</strong> </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox">
+                    <div class="ibox-body">
+                        <div class="row la-bold">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="ibox bg-success color-white widget-stat">
+                                    <div class="ibox-body">
+                                        <h2 class="m-b-5 font-strong"> {{ @total_member }} ສະມາຊິກ</h2>
+                                        <div class="m-b-5">ສະມາຊິກທັງໝົດ</div>
+                                    </div>
+                                </div>
+                            </div>  
+                           
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+            <include href="back-end/inc/footer.html"/>
+        </div>
+    </div>
+    <!-- BEGIN PAGA BACKDROPS-->
+    <div class="sidenav-backdrop backdrop"></div>
+    <div class="preloader-backdrop">
+        <div class="page-preloader">Loading</div>
+    </div>
+    <!-- END PAGA BACKDROPS-->
+    <!-- CORE PLUGINS-->
+    <include href="back-end/inc/script.html"/>
+   
+</body>
+</html>

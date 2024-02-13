@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>{{ @strPage }}</title>
+    <include href="back-end/inc/header.html"/>
+</head>
+
+<body class="fixed-navbar has-animation fixed-layout">
+    <div class="page-wrapper">
+        <!-- START HEADER-->
+        <include href="back-end/inc/topnav.html"/>
+        <!-- END HEADER-->
+        <!-- START SIDEBAR-->
+        <include href="back-end/inc/nav.html"/>
+        <!-- END SIDEBAR-->
+        <div class="content-wrapper">
+            <!-- START PAGE CONTENT-->
+            <div class="page-content fade-in-up">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ibox">
+                            <div class="ibox-head">
+                                <div class="ibox-title la-bold">{{ @strAction }}</div>
+                            </div>
+                            <div class="ibox-body">
+                                <table class="table table-bordered la-nomal">
+                                    <thead>
+                                        <tr>
+                                            <th>ລຳດັບ</th>
+                                            <th>ຊື່ ແລະ ນາມສະກຸນ</th>
+                                            <th>ອີເມວ</th>
+                                            <th>ຕຳແໜ່ງ</th>
+                                            <th>ວັນທີ່ສ້າງ</th>
+                                            <th>ຈັດການ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <repeat group="{{ @items }}" value="{{ @row }}" counter="{{ @ctr }}">
+                                            <tr id="item-{{ @row.id }}">
+                                                <td>{{ @ctr }}</td>
+                                                <td>{{ @row.name }}</td>
+                                                <td>{{ @row.email }}</td>
+                                                <td>{{ ucfirst(@row.role) }}</td>
+                                                <td>{{ @row.created_at }}</td>
+                                                <td class="text-center">
+                                                    <a href="{{ @BASE }}/admin/user/edit/{{ @row.id }}" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                                                    <button type="button" class="btn btn-danger ajax-delete" itemid="{{ @row.id }}" url="{{ @BASE }}/admin/user/{{ @row.id }}"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        </repeat>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="dataTables_paginate paging_simple_numbers" id="example-table_paginate">
+                                                    <ul class="pagination">
+                                                        <li class="paginate_button page-item previous disabled {{@doublePrevious.class ?? ''}}" id="example-table_previous">
+                                                            <a href="{{ @BASE }}/admin/user?pg={{@doublePrevious.pg ?? ''}}&limit={{@limit}}" aria-controls="example-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                                        </li>
+                                                        <li class="paginate_button page-item {{@singlePrevious.class ?? ''}}">
+                                                            <a href="{{ @BASE }}/admin/user?pg={{@singlePrevious.pg ?? ''}}&limit={{@limit}}" aria-controls="example-table" data-dt-idx="1" tabindex="0" class="page-link">&#8249;</a>
+                                                        </li>
+                                                        <check if="{{count(@PreviousStart)>0}}">
+                                                            <true>
+                                                                <li class="paginate_button page-item {{@PreviousStart.class ?? ''}}">
+                                                                    <a href="{{ @BASE }}/admin/user?pg={{@PreviousStart.pg ?? ''}}&limit={{@limit}}" aria-controls="example-table" data-dt-idx="1" tabindex="0" class="page-link">{{@PreviousStart.pg ?? ''}}</a>
+                                                                </li>
+                                                                <li class="paginate_button page-item">
+                                                                    <a href="#" aria-controls="example-table" data-dt-idx="1" tabindex="0" class="page-link">...</a>
+                                                                </li>
+                                                            </true>
+                                                        </check>
+                                                        <repeat group="{{@arrPagination}}" value="{{@paginationRow}}">
+                                                            <a class="btn btn-icon btn-sm btn-light mr-2 my-1 {{@paginationRow.class}}" href="/admin/article?pg={{@paginationRow.pg ?? ''}}&limit={{@limit}}">{{@paginationRow.pg ?? ''}}</a>
+                                                            <li class="paginate_button page-item {{@paginationRow.class}}">
+                                                                <a href="{{ @BASE }}/admin/user?pg={{@paginationRow.pg ?? ''}}&limit={{@limit}}" aria-controls="example-table" data-dt-idx="1" tabindex="0" class="page-link">{{@paginationRow.pg ?? ''}}</a>
+                                                            </li>
+                                                        </repeat>                                                        
+                                                        <check if="{{count(@singleNexPage)>0}}">
+                                                            <true>
+                                                                <li class="paginate_button page-item">
+                                                                    <a href="#" aria-controls="example-table" data-dt-idx="1" tabindex="0" class="page-link">...</a>
+                                                                </li>
+                                                                <li class="paginate_button page-item {{@doubleNexPage.class ?? ''}}">
+                                                                    <a href="{{ @BASE }}/admin/user?pg={{@doubleNexPage.pg ?? ''}}&limit={{@limit}}" aria-controls="example-table" data-dt-idx="1" tabindex="0" class="page-link">{{@doubleNexPage.pg}}</a>
+                                                                </li>
+                                                                <li class="paginate_button page-item {{@singleNexPage.class ?? ''}}">
+                                                                    <a href="{{ @BASE }}/admin/user?pg={{@singleNexPage.pg ?? ''}}&limit={{@limit}}" aria-controls="example-table" data-dt-idx="1" tabindex="0" class="page-link">&#8250;</a>
+                                                                </li>
+                                                            </true>
+                                                            <false>
+                                                                <li class="paginate_button page-item {{@singleNexPage.class ?? ''}}">
+                                                                    <a href="{{ @BASE }}/admin/user?pg={{@singleNexPage.pg ?? ''}}&limit={{@limit}}" aria-controls="example-table" data-dt-idx="1" tabindex="0" class="page-link">&#8250;</a>
+                                                                </li>
+                                                            </false>
+                                                        </check>
+                                                        <li class="paginate_button page-item {{@doubleNexPage.class ?? ''}}">
+                                                            <a href="{{ @BASE }}/admin/user?pg={{@doubleNexPage.pg ?? ''}}&limit={{@limit}}" aria-controls="example-table" data-dt-idx="1" tabindex="0" class="page-link">Next</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END PAGE CONTENT-->
+            <include href="back-end/inc/footer.html"/>
+        </div>
+    </div>
+    <!-- BEGIN THEME CONFIG PANEL-->
+    <!-- CORE PLUGINS-->
+    <include href="back-end/inc/script.html"/>
+</body>
+</html>
